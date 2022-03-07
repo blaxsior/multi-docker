@@ -1,0 +1,14 @@
+FROM node:alpine
+
+ARG START_DIR=/home/node/app
+
+USER node
+RUN mkdir ${START_DIR}
+RUN chown -R node:node ${START_DIR}
+WORKDIR ${START_DIR}
+COPY ./package.json ./
+
+RUN npm install
+
+COPY . .
+CMD ["npm", "run", "dev"]
