@@ -1,0 +1,23 @@
+name: multi-docker
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      
+      
+jobs:
+  build:
+    name: "build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+        # user login for speed up
+      - run: docker build -t blaxsior/next-test -f ./client/Dockerfile.dev ./client
+      - run: docker run -e CI=true blaxsior/next-test npm run test
+    
+      - name: "build multi-client"
+        run: docker build -t blaxsior/multi-client -f ./client/Dockerfile ./client
+        run: docker build -t blaxsior/multi-nginx -f ./nginx/Dockerfile ./nginx
+        run: docker build -t blaxsior/multi-server -f ./server/Dockerfile ./server
