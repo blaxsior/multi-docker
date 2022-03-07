@@ -7,8 +7,8 @@ on:
       
       
 jobs:
-  build:
-    name: "build"
+  test:
+    name: "test"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,7 +17,14 @@ jobs:
       - run: docker build -t blaxsior/next-test -f ./client/Dockerfile.dev ./client
       - run: docker run -e CI=true blaxsior/next-test npm run test
     
-      - name: "build multi-client"
-        run: docker build -t blaxsior/multi-client -f ./client/Dockerfile ./client
-        run: docker build -t blaxsior/multi-nginx -f ./nginx/Dockerfile ./nginx
-        run: docker build -t blaxsior/multi-server -f ./server/Dockerfile ./server
+  build:
+    name: "build all"
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - run: docker build -t blaxsior/multi-client -f ./client/Dockerfile ./client
+      - run: docker build -t blaxsior/multi-nginx -f ./nginx/Dockerfile ./nginx
+      - run: docker build -t blaxsior/multi-server -f ./server/Dockerfile ./server
+      - run: docker build -t blaxsior/multi-worker -f ./worker/Dockerfile ./worker
+
+    
