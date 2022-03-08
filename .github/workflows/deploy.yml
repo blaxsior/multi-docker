@@ -15,7 +15,7 @@ jobs:
       - run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
         # user login for speed up
       - run: docker build -t blaxsior/next-test -f ./client/Dockerfile.dev ./client
-      - run: docker run -e CI=true blaxsior/next-test npm run test
+      # - run: docker run -e CI=true blaxsior/next-test npm run test
     
   build:
     name: "build all"
