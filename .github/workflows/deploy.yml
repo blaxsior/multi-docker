@@ -26,5 +26,4 @@ jobs:
       - run: docker build -t blaxsior/multi-nginx -f ./nginx/Dockerfile ./nginx
       - run: docker build -t blaxsior/multi-server -f ./server/Dockerfile ./server
       - run: docker build -t blaxsior/multi-worker -f ./worker/Dockerfile ./worker
-
-    
+## some test!
